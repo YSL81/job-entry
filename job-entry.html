@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>求職申込フォーム</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            background-color: #fdfaf6;
+            color: #333;
+            margin: 2rem;
+        }
+
+        h1 {
+            background-color: #cfe8cc;
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 1rem;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background-color: #8bcfa9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>求職申込フォーム</h1>
+    <form id="entryForm">
+        <label>氏名（漢字）<input name="kanji" required></label>
+        <label>氏名（ローマ字）<input name="romaji" required></label>
+        <label>フリガナ<input name="kana"></label>
+        <label>性別
+            <select name="gender">
+                <option>男性</option>
+                <option>女性</option>
+                <option>その他</option>
+            </select>
+        </label>
+        <label>生年月日<input type="date" name="birthday"></label>
+        <label>血液型
+            <select name="blood">
+                <option>A</option>
+                <option>B</option>
+                <option>O</option>
+                <option>AB</option>
+            </select>
+        </label>
+        <label>国籍<input name="nationality"></label>
+        <label>在留資格<input name="status"></label>
+        <label>在留期限<input type="date" name="expiry"></label>
+        <label>現住所<input name="address"></label>
+        <label>本国住所<input name="address_origin"></label>
+        <label>電話番号<input name="phone"></label>
+        <label>メールアドレス<input type="email" name="email"></label>
+        <label>顔写真（URL貼付）<input name="photo"></label>
+        <label>学歴<textarea name="education"></textarea></label>
+        <label>職歴<textarea name="career"></textarea></label>
+        <label>アルバイト歴<textarea name="parttime"></textarea></label>
+        <label>日本語レベル
+            <select name="japanese">
+                <option>N1</option>
+                <option>N2</option>
+                <option>N3</option>
+                <option>N4</option>
+                <option>N5</option>
+                <option>未取得</option>
+            </select>
+        </label>
+        <label>所持資格<textarea name="license"></textarea></label>
+        <label>希望職種<textarea name="job"></textarea></label>
+        <label>希望勤務地
+            <select name="location">
+                <option>首都圏</option>
+                <option>地方</option>
+            </select>
+        </label>
+        <label>通勤方法・時間<textarea name="commute"></textarea></label>
+        <label>希望収入<input name="salary"></label>
+        <label>希望勤務時間<textarea name="time"></textarea></label>
+        <label>希望休日<textarea name="holiday"></textarea></label>
+        <label>その他の希望<textarea name="other"></textarea></label>
+
+        <button type="submit">送信</button>
+    </form>
+
+    <script>
+        document.getElementById("entryForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch("https://script.google.com/macros/s/AKfycbz7a67Pg0_MrOhfU_UJknj6C6s0APSYUqoF06J9Rx2bFD7NR-8leoU2env0546wtZtafw/exec", {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (response.ok) {
+                    alert("送信完了しました！");
+                    form.reset();
+                } else {
+                    alert("送信に失敗しました。");
+                }
+            } catch (err) {
+                console.error("Fetch error:", err);
+                alert("ネットワークエラーが発生しました。");
+            }
+        });
+    </script>
+</body>
+
+</html>
